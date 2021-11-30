@@ -1,0 +1,60 @@
+#====================================
+#EVENT
+#====================================
+
+
+
+variables:
+	{eventu} = "false"
+	{eventime} = 1
+
+
+command /setevent:
+	permission: event.admin
+	trigger:
+		set {event} to location of block at location of player
+		send "You set the position of the &bevent&f." to player
+
+command /event:
+	permission: event.teleport
+	trigger:
+		if {eventu} is "true":
+			teleport player to {event}
+			set {eventime} to 2
+			play sound "entity.player.levelup" with volume 1 and pitch 1 at all players for players
+			send "&b&l((EVENT))&r &fYou teleported to the &bevent&f." to player
+		else:
+			if {eventu} is "false":
+				send "&b&l((EVENT))&r &fThere is no &bevent&f in progress." to player
+
+command /event-on:
+	permission: event.admin
+	trigger:
+		set {eventu} to "True"
+		play sound "entity.player.levelup" with volume 1 and pitch 1 at all players for players
+		broadcast "&b&l((EVENT))&r The &c%player%&f admin started an event. [&c/event&f] to teleport you."
+		
+command /event-off:
+	permission: event.admin
+	trigger:
+		set {eventu} to "False"
+		broadcast "&b&l((EVENT))&r The &c%player%&f admin stopped teleport at the &bevent&f, success!"
+
+command /event-close:
+	permission: event.admin
+	trigger:
+		play sound "entity.player.levelup" with volume 1 and pitch 1 at all players for players
+		broadcast "&b&l((EVENT))&r The event is over."
+		set {eventime} to 1
+
+
+command /eventhelp:
+	permission: event.admin
+	trigger:
+		send "&m                 &bEVENT COMMANDS&f&m                 "
+		send "&b/&fevent &b-&f teleportation to the &bevent&r location&f."
+		send "&b/&fsetevent &b-&f set the location of the &bevent&r."
+		send "&b/&fevent-on &b-&f open the teleportation for the &bevent&f."
+		send "&b/&fevent-off &b-&f close the teleportation for the &bevent&f."
+		send "&b/&fevent-close &b-&f close the &bevent&f."
+		send "&m                                                     "
